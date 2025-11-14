@@ -1,0 +1,220 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "prediction-consommation-energie-batiments"
+version = "1.0.0"
+description = "Projet de prédiction de la consommation d'énergie des bâtiments"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Adam Akeb", email = "adam.akeb@example.com"}
+]
+keywords = [
+    "machine-learning",
+    "energy-prediction",
+    "building-energy",
+    "data-science",
+    "regression"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+
+dependencies = [
+    # Analyse de données principales
+    "pandas>=1.5.0,<3.0.0",
+    "numpy>=1.21.0,<2.0.0",
+    
+    # Visualisation
+    "matplotlib>=3.5.0,<4.0.0",
+    "seaborn>=0.11.0,<1.0.0",
+    
+    # Machine Learning
+    "scikit-learn>=1.1.0,<2.0.0",
+    "lightgbm>=3.3.0,<5.0.0",
+    
+    # Interprétabilité des modèles
+    "shap>=0.41.0,<1.0.0",
+    
+    # Statistiques
+    "scipy>=1.8.0,<2.0.0",
+    
+    # Notebooks Jupyter
+    "jupyter>=1.0.0,<2.0.0",
+    "ipykernel>=6.0.0,<7.0.0",
+    "notebook>=6.4.0,<7.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Outils de développement
+    "black>=22.0.0",
+    "flake8>=4.0.0",
+    "isort>=5.10.0",
+    "mypy>=0.991",
+    "pre-commit>=2.20.0",
+    
+    # Tests
+    "pytest>=7.0.0",
+    "pytest-cov>=3.0.0",
+    "pytest-mock>=3.7.0",
+    
+    # Documentation
+    "sphinx>=5.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+]
+
+visualization = [
+    # Visualisations avancées
+    "plotly>=5.0.0",
+    "bokeh>=2.4.0",
+    "altair>=4.2.0",
+]
+
+performance = [
+    # Optimisation des performances
+    "numba>=0.56.0",
+    "dask[complete]>=2022.1.0",
+]
+
+all = [
+    "prediction-consommation-energie-batiments[dev,visualization,performance]"
+]
+
+[project.urls]
+Homepage = "https://github.com/AdamAe6/Op-Projet-3"
+Repository = "https://github.com/AdamAe6/Op-Projet-3"
+Documentation = "https://github.com/AdamAe6/Op-Projet-3#readme"
+"Bug Tracker" = "https://github.com/AdamAe6/Op-Projet-3/issues"
+
+[project.scripts]
+energie-predict = "src.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["prediction_energie*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_third_party = [
+    "numpy",
+    "pandas", 
+    "sklearn",
+    "matplotlib",
+    "seaborn",
+    "lightgbm",
+    "shap",
+    "scipy"
+]
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = [
+    "E203",  # whitespace before ':'
+    "W503",  # line break before binary operator
+]
+exclude = [
+    ".git",
+    "__pycache__",
+    "docs/source/conf.py",
+    "old",
+    "build",
+    "dist",
+    "*.egg-info",
+    ".venv",
+]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+disallow_untyped_decorators = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "lightgbm.*",
+    "shap.*",
+    "seaborn.*",
+    "sklearn.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=src",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+]
+testpaths = ["tests"]
+filterwarnings = [
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
